@@ -1,0 +1,33 @@
+import Link from "next/link";
+import { Stethoscope, Radio, ArrowLeft } from "lucide-react";
+
+export default function DoctorPage() {
+    return (
+        <div className="min-h-screen flex flex-col items-center justify-center p-8 relative overflow-hidden text-center">
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+                <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
+            </div>
+
+            <div className="absolute top-6 left-6 z-20">
+                <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                    <ArrowLeft className="w-5 h-5" />
+                    <span className="font-mono text-sm">BACK</span>
+                </Link>
+            </div>
+
+            <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-6 animate-float">
+                <Stethoscope className="w-12 h-12 text-primary" />
+            </div>
+
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">RESCUER HUD</h1>
+            <p className="text-primary/80 font-mono text-sm tracking-widest uppercase mb-8">System Initialized</p>
+
+            <div className="glass-card p-6 rounded-xl max-w-md w-full border border-primary/20">
+                <div className="flex items-center justify-center gap-3 text-muted-foreground">
+                    <Radio className="w-5 h-5 animate-pulse text-primary" />
+                    <span>Scanning local mesh for distress signals...</span>
+                </div>
+            </div>
+        </div>
+    );
+}
