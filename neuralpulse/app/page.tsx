@@ -3,21 +3,16 @@ import { User, Stethoscope, Activity, ShieldCheck } from "lucide-react";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* Background Ambience */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] animate-pulse-slow delay-1000" />
-      </div>
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 relative overflow-hidden bg-background text-foreground">
 
       <div className="z-10 flex flex-col items-center text-center max-w-4xl w-full">
         {/* Header */}
         <div className="mb-16 animate-float">
           <div className="flex items-center justify-center gap-3 mb-2">
             <Activity className="w-8 h-8 text-primary" />
-            <span className="text-xs font-mono tracking-[0.3em] text-primary/80 uppercase">Decentralized Mesh Network</span>
+            <span className="text-xs font-mono tracking-[0.3em] text-primary uppercase">Decentralized Mesh Network</span>
           </div>
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-4 bg-gradient-to-r from-white via-gray-200 to-gray-500 bg-clip-text text-transparent">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-4 text-primary">
             NEURAL-PULSE
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -30,15 +25,15 @@ export default function Home() {
 
           {/* Patient Card */}
           <Link href="/patient" className="group">
-            <div className="glass-card p-8 rounded-2xl h-full transition-all duration-300 hover:bg-white/5 hover:border-secondary/50 hover:shadow-[0_0_30px_rgba(255,0,85,0.2)] flex flex-col items-center text-center border border-white/5">
-              <div className="w-20 h-20 rounded-full bg-secondary/10 flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-all">
-                <User className="w-10 h-10 text-secondary" />
+            <div className="glass-card p-8 rounded-2xl h-full transition-all duration-300 hover:shadow-lg hover:border-black/50 flex flex-col items-center text-center">
+              <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center mb-6 group-hover:scale-105 transition-all">
+                <User className="w-10 h-10 text-primary" />
               </div>
-              <h2 className="text-2xl font-bold mb-2 text-white group-hover:text-secondary transition-colors">Patient</h2>
+              <h2 className="text-2xl font-bold mb-2 text-primary">Patient</h2>
               <p className="text-sm text-muted-foreground mb-6">
                 Broadcast your critical medical data securely to the mesh.
               </p>
-              <div className="mt-auto w-full py-2 px-4 rounded-full border border-secondary/30 text-secondary text-sm font-mono group-hover:bg-secondary group-hover:text-black transition-all">
+              <div className="mt-auto w-full py-2 px-4 rounded-full border border-black/30 text-primary text-sm font-mono group-hover:bg-primary group-hover:text-white transition-all">
                 INITIALIZE IDENTITY
               </div>
             </div>
@@ -47,15 +42,15 @@ export default function Home() {
 
           {/* Doctor Card */}
           <Link href="/doctor" className="group">
-            <div className="glass-card p-8 rounded-2xl h-full transition-all duration-300 hover:bg-white/5 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(0,240,255,0.2)] flex flex-col items-center text-center border border-white/5">
-              <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all">
+            <div className="glass-card p-8 rounded-2xl h-full transition-all duration-300 hover:shadow-lg hover:border-black/50 flex flex-col items-center text-center">
+              <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center mb-6 group-hover:scale-105 transition-all">
                 <Stethoscope className="w-10 h-10 text-primary" />
               </div>
-              <h2 className="text-2xl font-bold mb-2 text-white group-hover:text-primary transition-colors">Doctor</h2>
+              <h2 className="text-2xl font-bold mb-2 text-primary">Doctor</h2>
               <p className="text-sm text-muted-foreground mb-6">
                 Scan for distressed signals and decrypt patient shards.
               </p>
-              <div className="mt-auto w-full py-2 px-4 rounded-full border border-primary/30 text-primary text-sm font-mono group-hover:bg-primary group-hover:text-black transition-all">
+              <div className="mt-auto w-full py-2 px-4 rounded-full border border-black/30 text-primary text-sm font-mono group-hover:bg-primary group-hover:text-white transition-all">
                 ACCESS RADAR HUD
               </div>
             </div>
@@ -65,17 +60,17 @@ export default function Home() {
         {/* Auditor Card */}
         <div className="w-full max-w-2xl px-4 mt-6">
           <Link href="/auditor" className="group block">
-            <div className="glass-card p-6 rounded-2xl transition-all duration-300 hover:bg-white/5 hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(239,68,68,0.2)] flex items-center justify-between border border-white/5 bg-transparent">
+            <div className="glass-card p-6 rounded-2xl transition-all duration-300 hover:shadow-lg hover:border-black/50 flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20 group-hover:scale-110 transition-transform">
-                  <ShieldCheck className="w-6 h-6 text-red-500" />
+                <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center border border-black/20 group-hover:scale-110 transition-transform">
+                  <ShieldCheck className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-white group-hover:text-red-400 transition-colors text-left">COMPLIANCE AUDITOR</h2>
+                  <h2 className="text-lg font-bold text-primary text-left">COMPLIANCE AUDITOR</h2>
                   <p className="text-xs text-muted-foreground font-mono text-left">ACCESS IMMUTABLE LOGS</p>
                 </div>
               </div>
-              <div className="py-2 px-4 rounded-full border border-red-500/30 text-red-400 text-xs font-mono group-hover:bg-red-500 group-hover:text-black transition-all hidden sm:block">
+              <div className="py-2 px-4 rounded-full border border-black/30 text-primary text-xs font-mono group-hover:bg-primary group-hover:text-white transition-all hidden sm:block">
                 ENTER PORTAL
               </div>
             </div>

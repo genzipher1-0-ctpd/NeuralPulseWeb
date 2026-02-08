@@ -168,56 +168,52 @@ export default function PatientPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-8 relative overflow-hidden text-center pb-20">
-            {/* Background elements */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-                <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[120px] animate-pulse-slow" />
-            </div>
+        <div className="min-h-screen flex flex-col items-center justify-center p-8 relative overflow-hidden text-center pb-20 bg-background text-foreground">
 
             <div className="absolute top-6 left-6 z-20">
-                <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-secondary transition-colors">
+                <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                     <span className="font-mono text-sm">BACK</span>
                 </Link>
             </div>
 
-            <div className="w-24 h-24 rounded-full bg-secondary/10 flex items-center justify-center mb-6 animate-float">
-                <User className="w-12 h-12 text-secondary" />
+            <div className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center mb-6 animate-float">
+                <User className="w-12 h-12 text-primary" />
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">PATIENT VAULT</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-primary mb-2 tracking-tight">PATIENT VAULT</h1>
 
             {/* Status Indicators */}
             <div className={`flex items-center gap-4 mb-6 text-sm font-mono flex-wrap justify-center`}>
-                <div className={`flex items-center gap-2 ${isOnline ? 'text-emerald-400' : 'text-red-400'}`}>
-                    <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`}></span>
+                <div className={`flex items-center gap-2 ${isOnline ? 'text-emerald-600' : 'text-red-600'}`}>
+                    <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`}></span>
                     {isOnline ? 'ONLINE' : 'CONNECTING...'}
                 </div>
-                <div className={`flex items-center gap-2 ${isVisible ? 'text-blue-400' : 'text-muted-foreground'}`}>
-                    <span className={`w-2 h-2 rounded-full ${isVisible ? 'bg-blue-400 animate-pulse' : 'bg-gray-600'}`}></span>
+                <div className={`flex items-center gap-2 ${isVisible ? 'text-blue-600' : 'text-muted-foreground'}`}>
+                    <span className={`w-2 h-2 rounded-full ${isVisible ? 'bg-blue-500 animate-pulse' : 'bg-gray-400'}`}></span>
                     {isVisible ? 'BROADCASTING' : 'HIDDEN'}
                 </div>
             </div>
 
             {/* ERROR / ACCESS ALERT */}
             {recentAccessLogs.length > 0 && (
-                <div className="w-full max-w-md bg-red-500/20 border border-red-500 mb-6 p-4 rounded-xl flex items-start gap-3 text-left animate-in slide-in-from-top-4">
-                    <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <div className="w-full max-w-md bg-red-50 border border-red-200 mb-6 p-4 rounded-xl flex items-start gap-3 text-left animate-in slide-in-from-top-4">
+                    <AlertTriangle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
                     <div>
-                        <h3 className="text-red-400 font-bold text-sm">EMERGENCY ACCESS DETECTED</h3>
-                        <p className="text-xs text-red-300/80 mt-1">
+                        <h3 className="text-red-700 font-bold text-sm">EMERGENCY ACCESS DETECTED</h3>
+                        <p className="text-xs text-red-600 mt-1">
                             Your medical record was accessed by:
                             <br /> <span className="font-mono">{recentAccessLogs[0].doctor_id}</span>
-                            <br /> <span className="opacity-70">{new Date(recentAccessLogs[0].timestamp).toLocaleTimeString()}</span>
+                            <br /> <span>{new Date(recentAccessLogs[0].timestamp).toLocaleTimeString()}</span>
                         </p>
-                        <div className="mt-2 text-[10px] text-red-500/50 uppercase tracking-wider">Logged to "The Ghost" Ledger</div>
+                        <div className="mt-2 text-[10px] text-red-600 uppercase tracking-wider">Logged to "The Ghost" Ledger</div>
                     </div>
                 </div>
             )}
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-4xl">
                 {/* Left Column: Connectivity */}
-                <div className="glass-card p-6 rounded-xl border border-secondary/20 space-y-6 flex flex-col justify-between">
+                <div className="glass-card p-6 rounded-xl border border-black/20 space-y-6 flex flex-col justify-between">
                     {/* Visibility Toggle */}
                     <button
                         onClick={async () => {
@@ -229,44 +225,44 @@ export default function PatientPage() {
                             setIsVisible(!isVisible);
                         }}
                         className={`w-full py-3 rounded-lg flex items-center justify-center gap-2 transition-all font-mono text-sm border ${isVisible
-                            ? "bg-blue-500/20 text-blue-400 border-blue-500/50 hover:bg-blue-500/30"
-                            : "bg-white/5 text-muted-foreground border-white/10 hover:bg-white/10"
+                            ? "bg-blue-500 text-white border-blue-600 hover:bg-blue-600"
+                            : "bg-secondary text-foreground border-transparent hover:bg-black/10"
                             }`}
                     >
                         {isVisible ? <><Eye className="w-4 h-4" /> STOP BROADCAST</> : <><Fingerprint className="w-4 h-4" /> AUTH & BROADCAST</>}
                     </button>
 
                     {/* QR Code */}
-                    <div className={`flex flex-col items-center justify-center p-6 bg-black/40 rounded-lg border border-white/10 transition-opacity duration-300 flex-1 min-h-[200px] ${isVisible ? 'opacity-100' : 'opacity-50 blur-[1px]'}`}>
+                    <div className={`flex flex-col items-center justify-center p-6 bg-white rounded-lg border border-black/20 transition-opacity duration-300 flex-1 min-h-[200px] ${isVisible ? 'opacity-100' : 'opacity-50 blur-[1px]'}`}>
                         <canvas ref={canvasRef} className="rounded-lg mb-4" />
                         <div className="flex items-center gap-2 w-full max-w-[200px]">
-                            <code className="text-xs text-secondary truncate flex-1 font-mono bg-black/50 p-1.5 rounded">
+                            <code className="text-xs text-primary truncate flex-1 font-mono bg-secondary p-1.5 rounded">
                                 {myId || "..."}
                             </code>
-                            <button onClick={copyToClipboard} className="text-white/50 hover:text-white">
+                            <button onClick={copyToClipboard} className="text-muted-foreground hover:text-primary">
                                 {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                             </button>
                         </div>
                     </div>
-                    <div className="flex items-center justify-center gap-3 text-muted-foreground pt-4 border-t border-white/10">
-                        <Activity className={`w-5 h-5 ${isVisible ? 'animate-pulse text-secondary' : 'text-muted-foreground'}`} />
+                    <div className="flex items-center justify-center gap-3 text-muted-foreground pt-4 border-t border-black/20">
+                        <Activity className={`w-5 h-5 ${isVisible ? 'animate-pulse text-blue-500' : 'text-muted-foreground'}`} />
                         <span>{isVisible ? 'Broadcasting health shards...' : 'Health data encrypted & offline'}</span>
                     </div>
                 </div>
 
                 {/* Right Column: Medical Data Input */}
-                <div className="glass-card p-6 rounded-xl border border-white/10 text-left relative overflow-hidden">
+                <div className="glass-card p-6 rounded-xl border border-black/5 text-left relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4">
                         <button
                             onClick={() => isEditing ? handleSaveData() : setIsEditing(true)}
-                            className="text-xs font-mono flex items-center gap-1 text-secondary hover:text-white transition-colors"
+                            className="text-xs font-mono flex items-center gap-1 text-primary hover:text-black transition-colors"
                         >
                             {isEditing ? <><Check className="w-3 h-3" /> SAVE</> : <><FileText className="w-3 h-3" /> EDIT DATA</>}
                         </button>
                     </div>
 
-                    <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                        <Activity className="w-5 h-5 text-secondary" />
+                    <h3 className="text-lg font-bold text-primary mb-6 flex items-center gap-2">
+                        <Activity className="w-5 h-5 text-accent" />
                         MY RELAY DATA
                     </h3>
 
@@ -278,10 +274,10 @@ export default function PatientPage() {
                                     type="text"
                                     value={medicalData.name}
                                     onChange={e => setMedicalData({ ...medicalData, name: e.target.value })}
-                                    className="w-full bg-black/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-secondary/50 outline-none"
+                                    className="w-full bg-secondary border border-border rounded px-3 py-2 text-sm text-primary focus:border-accent outline-none"
                                 />
                             ) : (
-                                <p className="text-white font-mono text-lg">{medicalData.name}</p>
+                                <p className="text-primary font-mono text-lg">{medicalData.name}</p>
                             )}
                         </div>
 
@@ -292,12 +288,12 @@ export default function PatientPage() {
                                     <select
                                         value={medicalData.bloodType}
                                         onChange={e => setMedicalData({ ...medicalData, bloodType: e.target.value })}
-                                        className="w-full bg-black/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-secondary/50 outline-none"
+                                        className="w-full bg-secondary border border-border rounded px-3 py-2 text-sm text-primary focus:border-accent outline-none"
                                     >
                                         {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(t => <option key={t} value={t}>{t}</option>)}
                                     </select>
                                 ) : (
-                                    <p className="text-white font-mono text-xl">{medicalData.bloodType}</p>
+                                    <p className="text-primary font-mono text-xl">{medicalData.bloodType}</p>
                                 )}
                             </div>
                         </div>
@@ -308,13 +304,13 @@ export default function PatientPage() {
                                 <textarea
                                     value={medicalData.allergies.join(", ")}
                                     onChange={e => setMedicalData({ ...medicalData, allergies: e.target.value.split(",").map(s => s.trim()) })}
-                                    className="w-full bg-black/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-secondary/50 outline-none h-20"
+                                    className="w-full bg-secondary border border-border rounded px-3 py-2 text-sm text-primary focus:border-accent outline-none h-20"
                                     placeholder="Comma separated"
                                 />
                             ) : (
                                 <div className="flex flex-wrap gap-2 mt-1">
                                     {medicalData.allergies.map((a, i) => (
-                                        <span key={i} className="bg-red-500/20 text-red-300 text-xs px-2 py-1 rounded border border-red-500/30">{a}</span>
+                                        <span key={i} className="bg-red-100 text-red-700 text-xs px-2 py-1 rounded border border-red-200">{a}</span>
                                     ))}
                                 </div>
                             )}
@@ -331,10 +327,10 @@ export default function PatientPage() {
                                             const val = parseInt(e.target.value);
                                             setMedicalData({ ...medicalData, age: isNaN(val) ? 0 : val });
                                         }}
-                                        className="w-full bg-black/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-secondary/50 outline-none"
+                                        className="w-full bg-secondary border border-border rounded px-3 py-2 text-sm text-primary focus:border-accent outline-none"
                                     />
                                 ) : (
-                                    <p className="text-white font-mono text-lg">{medicalData.age || '--'}</p>
+                                    <p className="text-primary font-mono text-lg">{medicalData.age || '--'}</p>
                                 )}
                             </div>
                             <div>
@@ -347,10 +343,10 @@ export default function PatientPage() {
                                             const val = parseInt(e.target.value);
                                             setMedicalData({ ...medicalData, weight: isNaN(val) ? 0 : val });
                                         }}
-                                        className="w-full bg-black/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-secondary/50 outline-none"
+                                        className="w-full bg-secondary border border-border rounded px-3 py-2 text-sm text-primary focus:border-accent outline-none"
                                     />
                                 ) : (
-                                    <p className="text-white font-mono text-lg">{medicalData.weight || '--'}</p>
+                                    <p className="text-primary font-mono text-lg">{medicalData.weight || '--'}</p>
                                 )}
                             </div>
                         </div>
@@ -361,13 +357,13 @@ export default function PatientPage() {
                                 <textarea
                                     value={medicalData.conditions.join(", ")}
                                     onChange={e => setMedicalData({ ...medicalData, conditions: e.target.value.split(",").map(s => s.trim()) })}
-                                    className="w-full bg-black/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-secondary/50 outline-none h-16"
+                                    className="w-full bg-secondary border border-border rounded px-3 py-2 text-sm text-primary focus:border-accent outline-none h-16"
                                     placeholder="e.g. Diabetes, Asthma"
                                 />
                             ) : (
                                 <div className="flex flex-wrap gap-2 mt-1">
                                     {medicalData.conditions.map((c, i) => (
-                                        <span key={i} className="bg-yellow-500/20 text-yellow-300 text-xs px-2 py-1 rounded border border-yellow-500/30">{c}</span>
+                                        <span key={i} className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded border border-yellow-200">{c}</span>
                                     ))}
                                 </div>
                             )}
@@ -379,13 +375,13 @@ export default function PatientPage() {
                                 <textarea
                                     value={medicalData.medications.join(", ")}
                                     onChange={e => setMedicalData({ ...medicalData, medications: e.target.value.split(",").map(s => s.trim()) })}
-                                    className="w-full bg-black/50 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-secondary/50 outline-none h-16"
+                                    className="w-full bg-secondary border border-border rounded px-3 py-2 text-sm text-primary focus:border-accent outline-none h-16"
                                     placeholder="e.g. Warfarin, Insulin"
                                 />
                             ) : (
                                 <div className="flex flex-wrap gap-2 mt-1">
                                     {medicalData.medications.map((m, i) => (
-                                        <span key={i} className="bg-blue-500/20 text-blue-300 text-xs px-2 py-1 rounded border border-blue-500/30">{m}</span>
+                                        <span key={i} className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded border border-blue-200">{m}</span>
                                     ))}
                                 </div>
                             )}
