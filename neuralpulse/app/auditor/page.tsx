@@ -35,7 +35,6 @@ export default function AuditorDashboard() {
                     </div>
                     <div className="text-left">
                         <h1 className="text-2xl font-bold text-primary tracking-tight">COMPLIANCE AUDIT LOG</h1>
-                        <p className="text-xs text-muted-foreground font-mono uppercase tracking-widest">GDPR / HIPAA / PDPA LEDGER</p>
                     </div>
                 </div>
                 <Link href="/" className="text-xs font-mono text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 border border-border px-3 py-1.5 rounded-lg hover:bg-secondary">

@@ -87,137 +87,89 @@ export default function DoctorPage() {
                         </button>
                     </div>
                 ) : (
-                    <div className="w-full max-w-4xl animate-in fade-in zoom-in-95">
-                        <div className="p-6">
-                            <div className="flex items-center justify-between mb-8 pb-6 border-b border-border">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center border border-black/20">
-                                        <User className="w-8 h-8 text-primary" />
+                    <div className="w-full max-w-2xl animate-in fade-in zoom-in-95">
+                        {/* Compact Patient Card */}
+                        <div className="glass-card p-6 rounded-xl border border-black/20">
+                            {/* Header Row: Name + Blood Type */}
+                            <div className="flex items-start justify-between mb-4 pb-4 border-b border-border">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center border border-black/10">
+                                        <User className="w-6 h-6 text-primary" />
                                     </div>
                                     <div className="text-left">
-                                        <h2 className="text-2xl font-bold text-primary">{patientData.name}</h2>
-                                        <p className="text-sm font-mono text-muted-foreground">ID: {patientData.id.substring(0, 12)}...</p>
-                                        <div className="flex items-center gap-2 mt-1">
-                                            <span className="text-xs bg-secondary px-2 py-0.5 rounded text-muted-foreground border border-gray-300">AGE: {patientData.age || 'N/A'}</span>
-                                            <span className="text-xs bg-secondary px-2 py-0.5 rounded text-muted-foreground border border-gray-300">WEIGHT: {patientData.weight ? patientData.weight + 'kg' : 'N/A'}</span>
+                                        <h2 className="text-xl font-bold text-primary">{patientData.name || "Unknown"}</h2>
+                                        <div className="flex items-center gap-2 mt-0.5">
+                                            <span className="text-xs bg-secondary px-1.5 py-0.5 rounded text-muted-foreground">{patientData.age || '--'} yrs</span>
+                                            <span className="text-xs bg-secondary px-1.5 py-0.5 rounded text-muted-foreground">{patientData.weight ? patientData.weight + 'kg' : '--'}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="text-right">
-                                    <div className="text-4xl font-black text-red-600">{patientData.bloodType}</div>
-                                    <div className="text-xs font-mono text-red-700 font-bold">BLOOD TYPE</div>
+                                <div className="text-center bg-red-100 px-4 py-2 rounded-lg border border-red-300">
+                                    <div className="text-3xl font-black text-red-700">{patientData.bloodType || "--"}</div>
+                                    <div className="text-[10px] font-mono text-red-600">BLOOD</div>
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-4">
-                                    <div className="text-left">
-                                        <h3 className="text-xs font-mono text-red-700 mb-2 flex items-center gap-2 font-bold">
-                                            <AlertTriangle className="w-3 h-3" /> CRITICAL CONDITIONS
-                                        </h3>
-                                        <div className="flex flex-wrap gap-2 text-left">
-                                            {patientData.conditions && patientData.conditions.length > 0 ? (
-                                                patientData.conditions.map((c: string, i: number) => (
-                                                    <span key={i} className="bg-red-100 text-red-800 px-3 py-1.5 rounded-lg border border-red-300 text-sm font-bold">
-                                                        {c}
-                                                    </span>
-                                                ))
-                                            ) : (
-                                                <span className="text-muted-foreground text-sm italic">None reported</span>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    <div className="text-left">
-                                        <h3 className="text-xs font-mono text-orange-700 mb-2 flex items-center gap-2 font-bold">
-                                            <AlertTriangle className="w-3 h-3" /> HIGH RISK MEDICATIONS
-                                        </h3>
-                                        <div className="flex flex-wrap gap-2 text-left">
-                                            {patientData.medications && patientData.medications.length > 0 ? (
-                                                patientData.medications.map((m: string, i: number) => (
-                                                    <span key={i} className="bg-orange-100 text-orange-800 px-3 py-1.5 rounded-lg border border-orange-300 text-sm font-bold">
-                                                        {m}
-                                                    </span>
-                                                ))
-                                            ) : (
-                                                <span className="text-muted-foreground text-sm italic">None reported</span>
-                                            )}
-                                        </div>
+                            {/* Critical Info Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-left">
+                                {/* Allergies */}
+                                <div className="p-3 bg-red-50 rounded-lg border border-red-200">
+                                    <h3 className="text-[10px] font-mono text-red-700 mb-2 font-bold flex items-center gap-1">
+                                        <AlertTriangle className="w-3 h-3" /> ALLERGIES
+                                    </h3>
+                                    <div className="flex flex-wrap gap-1">
+                                        {patientData.allergies && patientData.allergies.length > 0 ? (
+                                            patientData.allergies.map((a: string, i: number) => (
+                                                <span key={i} className="bg-white text-red-700 px-2 py-0.5 rounded text-xs font-medium border border-red-200">{a}</span>
+                                            ))
+                                        ) : (
+                                            <span className="text-xs text-muted-foreground italic">None</span>
+                                        )}
                                     </div>
                                 </div>
 
-                                <div className="text-left">
-                                    <h3 className="text-xs font-mono text-blue-700 mb-2 flex items-center gap-2 font-bold">
-                                        <Activity className="w-3 h-3" /> ALLERGIES
+                                {/* Conditions */}
+                                <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                                    <h3 className="text-[10px] font-mono text-yellow-700 mb-2 font-bold flex items-center gap-1">
+                                        <Activity className="w-3 h-3" /> CONDITIONS
                                     </h3>
-                                    <div className="flex flex-wrap gap-2 text-left">
-                                        {patientData.allergies && patientData.allergies.length > 0 ? (
-                                            patientData.allergies.map((a: string, i: number) => (
-                                                <span key={i} className="bg-blue-100 text-blue-800 px-3 py-1.5 rounded-lg border border-blue-300 text-sm font-bold">
-                                                    {a}
-                                                </span>
+                                    <div className="flex flex-wrap gap-1">
+                                        {patientData.conditions && patientData.conditions.length > 0 ? (
+                                            patientData.conditions.map((c: string, i: number) => (
+                                                <span key={i} className="bg-white text-yellow-700 px-2 py-0.5 rounded text-xs font-medium border border-yellow-200">{c}</span>
                                             ))
                                         ) : (
-                                            <span className="text-muted-foreground text-sm italic">None reported</span>
+                                            <span className="text-xs text-muted-foreground italic">None</span>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Medications */}
+                                <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                    <h3 className="text-[10px] font-mono text-blue-700 mb-2 font-bold flex items-center gap-1">
+                                        <FileText className="w-3 h-3" /> MEDICATIONS
+                                    </h3>
+                                    <div className="flex flex-wrap gap-1">
+                                        {patientData.medications && patientData.medications.length > 0 ? (
+                                            patientData.medications.map((m: string, i: number) => (
+                                                <span key={i} className="bg-white text-blue-700 px-2 py-0.5 rounded text-xs font-medium border border-blue-200">{m}</span>
+                                            ))
+                                        ) : (
+                                            <span className="text-xs text-muted-foreground italic">None</span>
                                         )}
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="mt-8 text-center">
-                            <button
-                                onClick={() => setSelectedPatientId(null)}
-                                className="bg-secondary hover:bg-gray-200 text-primary font-medium px-4 py-2 rounded-lg text-sm border border-black/20"
-                            >
-                                DISCONNECT VIEW
-                            </button>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-6 mt-8">
-                            {/* Vital Signs Card */}
-                            <div className="glass-card p-6 rounded-xl border border-emerald-600 text-left">
-                                <h3 className="text-sm font-mono text-emerald-700 mb-4 flex items-center gap-2 font-bold">
-                                    <Activity className="w-4 h-4" /> LIVE VITALS {loadingData && "(Syncing...)"}
-                                </h3>
-
-                                {patientData ? (
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="p-3 bg-secondary rounded-lg border border-black/20">
-                                            <p className="text-xs text-muted-foreground font-bold">HEART RATE</p>
-                                            <p className="text-2xl text-primary font-mono font-bold">{patientData.recentVitals?.heartRate ?? '--'} <span className="text-xs text-muted-foreground">BPM</span></p>
-                                        </div>
-                                        <div className="p-3 bg-secondary rounded-lg border border-black/20">
-                                            <p className="text-xs text-muted-foreground font-bold">O2 SAT</p>
-                                            <p className="text-2xl text-primary font-mono font-bold">{patientData.recentVitals?.oxygenSat ?? '--'} <span className="text-xs text-muted-foreground">%</span></p>
-                                        </div>
-                                        <div className="p-3 bg-secondary rounded-lg border border-black/20 col-span-2">
-                                            <p className="text-xs text-muted-foreground font-bold">BLOOD TYPE & CONDITIONS</p>
-                                            <p className="text-xl text-primary font-mono font-bold">{patientData.bloodType}</p>
-                                            <div className="flex flex-wrap gap-2 mt-2">
-                                                {patientData.conditions?.length > 0 ? (
-                                                    patientData.conditions.map((c: string, i: number) => (
-                                                        <span key={i} className="px-2 py-0.5 bg-red-100 text-red-800 text-[10px] rounded border border-red-200 font-bold">{c}</span>
-                                                    ))
-                                                ) : <span className="text-[10px] text-muted-foreground italic">None</span>}
-                                            </div>
-                                        </div>
-                                        <div className="p-3 bg-secondary rounded-lg border border-black/20 col-span-2">
-                                            <p className="text-xs text-muted-foreground font-bold">MEDICATIONS</p>
-                                            <div className="flex flex-wrap gap-2 mt-1">
-                                                {patientData.medications?.length > 0 ? (
-                                                    patientData.medications.map((m: string, i: number) => (
-                                                        <span key={i} className="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] rounded border border-blue-200 font-bold">{m}</span>
-                                                    ))
-                                                ) : <span className="text-[10px] text-muted-foreground italic">None</span>}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="flex items-center justify-center h-40 text-muted-foreground">
-                                        <p>Waiting for secure handshake...</p>
-                                    </div>
-                                )}
+                            {/* Footer with ID and Disconnect */}
+                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+                                <span className="text-[10px] font-mono text-muted-foreground">ID: {patientData.id?.substring(0, 16)}...</span>
+                                <button
+                                    onClick={() => setSelectedPatientId(null)}
+                                    className="text-xs font-mono text-red-600 hover:text-red-700 hover:underline"
+                                >
+                                    DISCONNECT
+                                </button>
                             </div>
                         </div>
                     </div>

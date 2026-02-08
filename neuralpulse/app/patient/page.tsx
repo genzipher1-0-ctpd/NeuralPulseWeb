@@ -56,24 +56,25 @@ export default function PatientPage() {
                     // Merge with defaults to ensure new fields (age, weight) exist if missing
                     setMedicalData({
                         name: loadedData.name || "",
-                        age: typeof loadedData.age === 'number' ? loadedData.age : 35, // Default age if missing
-                        weight: typeof loadedData.weight === 'number' ? loadedData.weight : 75, // Default weight if missing
-                        bloodType: loadedData.bloodType || "O+",
+                        age: typeof loadedData.age === 'number' ? loadedData.age : 0,
+                        weight: typeof loadedData.weight === 'number' ? loadedData.weight : 0,
+                        bloodType: loadedData.bloodType || "",
                         conditions: Array.isArray(loadedData.conditions) ? loadedData.conditions : [],
                         medications: Array.isArray(loadedData.medications) ? loadedData.medications : [],
                         allergies: Array.isArray(loadedData.allergies) ? loadedData.allergies : []
                     });
                 } else {
-                    // Initialize Default
+                    // Initialize Empty Default - Force User to Enter Data
                     setMedicalData({
-                        name: "John Doe",
-                        age: 35,
-                        weight: 75,
-                        bloodType: "O+",
-                        conditions: ["WASP ALLERGY"],
-                        medications: ["EPIPEN"],
-                        allergies: ["WASP STINGS"]
+                        name: "",
+                        age: 0,
+                        weight: 0,
+                        bloodType: "",
+                        conditions: [],
+                        medications: [],
+                        allergies: []
                     });
+                    setIsEditing(true); // Auto-open edit mode
                 }
             } catch (err) {
                 console.error("Vault Corruption / Key Mismatch:", err);
@@ -81,14 +82,15 @@ export default function PatientPage() {
                 localStorage.removeItem("glassvault_data");
                 localStorage.removeItem("glassvault_key");
                 setMedicalData({
-                    name: "John Doe",
-                    age: 35,
-                    weight: 75,
-                    bloodType: "O+",
-                    conditions: ["WASP ALLERGY"],
-                    medications: ["EPIPEN"],
-                    allergies: ["WASP STINGS"]
+                    name: "",
+                    age: 0,
+                    weight: 0,
+                    bloodType: "",
+                    conditions: [],
+                    medications: [],
+                    allergies: []
                 });
+                setIsEditing(true); // Auto-open edit mode
             }
         };
         initVault();
@@ -218,7 +220,14 @@ export default function PatientPage() {
                     <button
                         onClick={async () => {
                             if (!isVisible) {
-                                // BIO-RAIDER: Simulate Biometrics
+                                // 1. Check if data is filled
+                                if (!medicalData.name || !medicalData.bloodType) {
+                                    alert("MISSING MEDICAL DATA: Please fill in your name and blood type before broadcasting.");
+                                    setIsEditing(true);
+                                    return;
+                                }
+
+                                // 2. BIO-RAIDER: Simulate Biometrics
                                 const bioAuth = confirm("BIO-RAIDER SECURITY CHECK:\n\nPlease authenticate with FaceID / Biometrics to enable beacon.");
                                 if (!bioAuth) return;
                             }
@@ -277,7 +286,7 @@ export default function PatientPage() {
                                     className="w-full bg-secondary border border-border rounded px-3 py-2 text-sm text-primary focus:border-accent outline-none"
                                 />
                             ) : (
-                                <p className="text-primary font-mono text-lg">{medicalData.name}</p>
+                                <p className="text-primary font-mono text-lg">{medicalData.name || "NOT SET"}</p>
                             )}
                         </div>
 
@@ -290,10 +299,11 @@ export default function PatientPage() {
                                         onChange={e => setMedicalData({ ...medicalData, bloodType: e.target.value })}
                                         className="w-full bg-secondary border border-border rounded px-3 py-2 text-sm text-primary focus:border-accent outline-none"
                                     >
+                                        <option value="">Select Type</option>
                                         {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(t => <option key={t} value={t}>{t}</option>)}
                                     </select>
                                 ) : (
-                                    <p className="text-primary font-mono text-xl">{medicalData.bloodType}</p>
+                                    <p className="text-primary font-mono text-xl">{medicalData.bloodType || "--"}</p>
                                 )}
                             </div>
                         </div>
