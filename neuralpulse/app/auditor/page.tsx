@@ -1,30 +1,105 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAccessLogs } from "../actions";
-import { ShieldAlert, RefreshCw, Lock, FileDigit, Calendar } from "lucide-react";
+import { getAccessLogs, verifyAuditorPin } from "../actions";
+import { ShieldAlert, RefreshCw, Lock, FileDigit, Calendar, KeyRound } from "lucide-react";
 import Link from "next/link";
 
 export default function AuditorDashboard() {
     const [logs, setLogs] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [pin, setPin] = useState("");
+    const [pinError, setPinError] = useState("");
+    const [verifying, setVerifying] = useState(false);
 
-    const fetchLogs = async () => {
+    const handlePinSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setPinError("");
+        setVerifying(true);
+
+        try {
+            const result = await verifyAuditorPin(pin);
+            if (result.success) {
+                setIsAuthenticated(true);
+                fetchLogs(pin);
+            } else {
+                setPinError(result.error || "Invalid PIN");
+                setPin("");
+            }
+        } catch (error) {
+            setPinError("Verification failed");
+            setPin("");
+        } finally {
+            setVerifying(false);
+        }
+    };
+
+    const fetchLogs = async (authPin?: string) => {
         setLoading(true);
         try {
-            const data = await getAccessLogs();
+            const data = await getAccessLogs(authPin || pin);
             setLogs(data);
         } catch (error) {
             console.error(error);
+            setPinError("Access denied");
+            setIsAuthenticated(false);
         } finally {
             setLoading(false);
         }
     };
 
-    useEffect(() => {
-        fetchLogs();
-    }, []);
+    // PIN Entry Screen
+    if (!isAuthenticated) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-background text-foreground">
+                <div className="w-full max-w-sm">
+                    <div className="glass-card p-8 rounded-xl border border-black/20 text-center">
+                        <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-200">
+                            <Lock className="w-8 h-8 text-red-600" />
+                        </div>
+                        <h1 className="text-xl font-bold text-primary mb-2">AUDIT ACCESS</h1>
+                        <p className="text-xs text-muted-foreground font-mono mb-6">Enter authorization PIN</p>
 
+                        <form onSubmit={handlePinSubmit} className="space-y-4">
+                            <input
+                                type="password"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                                maxLength={8}
+                                value={pin}
+                                onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
+                                placeholder="••••"
+                                className="w-full text-center text-2xl font-mono tracking-[0.5em] bg-secondary border border-border rounded-lg px-4 py-4 text-primary focus:outline-none focus:border-red-400"
+                                autoFocus
+                            />
+                            {pinError && (
+                                <p className="text-red-600 text-xs font-mono">{pinError}</p>
+                            )}
+                            <button
+                                type="submit"
+                                disabled={pin.length < 4 || verifying}
+                                className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-300 text-white font-mono text-sm py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                            >
+                                {verifying ? (
+                                    <RefreshCw className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <KeyRound className="w-4 h-4" />
+                                )}
+                                {verifying ? "VERIFYING..." : "AUTHENTICATE"}
+                            </button>
+                        </form>
+
+                        <Link href="/" className="text-xs text-muted-foreground hover:text-primary mt-6 block font-mono">
+                            ← BACK TO HOME
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Authenticated: Show Logs
     return (
         <div className="min-h-screen p-8 relative overflow-hidden text-center flex flex-col items-center bg-background text-foreground">
 
@@ -37,9 +112,17 @@ export default function AuditorDashboard() {
                         <h1 className="text-2xl font-bold text-primary tracking-tight">COMPLIANCE AUDIT LOG</h1>
                     </div>
                 </div>
-                <Link href="/" className="text-xs font-mono text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 border border-border px-3 py-1.5 rounded-lg hover:bg-secondary">
-                    EXIT AUDIT MODE
-                </Link>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => { setIsAuthenticated(false); setPin(""); setLogs([]); }}
+                        className="text-xs font-mono text-red-600 hover:text-red-700 transition-colors flex items-center gap-1 border border-red-200 px-3 py-1.5 rounded-lg hover:bg-red-50"
+                    >
+                        <Lock className="w-3 h-3" /> LOCK
+                    </button>
+                    <Link href="/" className="text-xs font-mono text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 border border-border px-3 py-1.5 rounded-lg hover:bg-secondary">
+                        EXIT
+                    </Link>
+                </div>
             </div>
 
             <div className="w-full max-w-6xl glass-card border border-border rounded-xl overflow-hidden flex flex-col h-[70vh] shadow-sm">
@@ -49,7 +132,7 @@ export default function AuditorDashboard() {
                         GHOST LEDGER: HASH-CHAIN VERIFIED
                     </div>
                     <button
-                        onClick={fetchLogs}
+                        onClick={() => fetchLogs()}
                         className="p-2 hover:bg-secondary rounded-full transition-colors flex items-center gap-2 text-xs font-mono border border-transparent hover:border-border"
                         disabled={loading}
                     >

@@ -194,7 +194,41 @@ export async function getPatientEmergencyInfo(patientId: string, doctorId: strin
     }
 }
 
-export async function getAccessLogs() {
+// Auditor PIN Verification (Server-Side)
+const AUDITOR_PIN = process.env.AUDITOR_PIN || "1234"; // Set in .env for production
+
+export async function verifyAuditorPin(pin: string): Promise<{ success: boolean; error?: string }> {
+    // Server-side comparison - never expose the real PIN
+    if (!pin || typeof pin !== "string") {
+        return { success: false, error: "PIN required" };
+    }
+
+    // Constant-time comparison to prevent timing attacks
+    if (pin.length !== AUDITOR_PIN.length) {
+        return { success: false, error: "Invalid PIN" };
+    }
+
+    let isValid = true;
+    for (let i = 0; i < pin.length; i++) {
+        if (pin[i] !== AUDITOR_PIN[i]) {
+            isValid = false;
+        }
+    }
+
+    if (!isValid) {
+        return { success: false, error: "Invalid PIN" };
+    }
+
+    return { success: true };
+}
+
+export async function getAccessLogs(pin: string) {
+    // Verify PIN server-side before returning any logs
+    const verification = await verifyAuditorPin(pin);
+    if (!verification.success) {
+        throw new Error(verification.error || "Unauthorized");
+    }
+
     try {
         const res = await query("SELECT * FROM access_logs ORDER BY timestamp DESC LIMIT 50");
         return res.rows;
