@@ -44,6 +44,7 @@ export default function Home() {
             </div>
           </Link>
 
+
           {/* Doctor Card */}
           <Link href="/doctor" className="group">
             <div className="glass-card p-8 rounded-2xl h-full transition-all duration-300 hover:bg-white/5 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(0,240,255,0.2)] flex flex-col items-center text-center border border-white/5">
@@ -59,7 +60,26 @@ export default function Home() {
               </div>
             </div>
           </Link>
+        </div>
 
+        {/* Auditor Card */}
+        <div className="w-full max-w-2xl px-4 mt-6">
+          <Link href="/auditor" className="group block">
+            <div className="glass-card p-6 rounded-2xl transition-all duration-300 hover:bg-white/5 hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(239,68,68,0.2)] flex items-center justify-between border border-white/5 bg-transparent">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20 group-hover:scale-110 transition-transform">
+                  <ShieldCheck className="w-6 h-6 text-red-500" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-white group-hover:text-red-400 transition-colors text-left">COMPLIANCE AUDITOR</h2>
+                  <p className="text-xs text-muted-foreground font-mono text-left">ACCESS IMMUTABLE LOGS</p>
+                </div>
+              </div>
+              <div className="py-2 px-4 rounded-full border border-red-500/30 text-red-400 text-xs font-mono group-hover:bg-red-500 group-hover:text-black transition-all hidden sm:block">
+                ENTER PORTAL
+              </div>
+            </div>
+          </Link>
         </div>
 
         {/* Footer Status */}
